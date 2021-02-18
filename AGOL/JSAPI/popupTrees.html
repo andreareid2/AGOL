@@ -1,0 +1,67 @@
+<html>
+<head>
+  <meta name="description" content="DevLab: Configure a popup">
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>ArcGIS API for JavaScript Tutorials: Display a pop-up (JSAPI)</title>
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.18/"></script>
+</head>
+
+ <script>
+
+  require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+
+      "esri/layers/FeatureLayer"
+    ],
+
+    function(esriConfig,Map, MapView, FeatureLayer){
+
+     esriConfig.apiKey = "AAPKda8ff5975eda4bbd9324a741b11fd45a_9LW-kh2GiPVvSfFoE9E-2EzeMXorbCLGwU577QODcJZD61G5HWU3gg-6nEQpH50";
+
+      const map = new Map({
+        basemap: "arcgis-topographic" //Basemap layer service
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-66.63905923633949,45.96044331135008], //Longitude, latitude
+        zoom: 13
+      });
+
+      // Define a pop-up for Trailheads
+      const popupTree = {
+        "title": "This is a tree!",
+        "content": "<b>Class:</b> {Class}<br><b>Species:</b> {Species}"
+      }
+
+    const treelocation = new FeatureLayer({
+        url: "https://services3.arcgis.com/a607lp1AkH31bF2m/ArcGIS/rest/services/treecollectionsurvey/FeatureServer/0",
+        outFields: ["Class","Species"],
+        popupTemplate: popupTree
+      });
+
+      map.add(treelocation);
+
+    });
+  </script>
+
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
